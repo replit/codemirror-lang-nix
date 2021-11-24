@@ -4,7 +4,7 @@ run="npm run dev"
 language = "nodejs-npm"
 [packager.features]
 packageSearch = true
-guessImports = true
+# guessImports = true
 
 [languages.js]
 pattern = "**/*.ts"
