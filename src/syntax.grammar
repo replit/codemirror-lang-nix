@@ -197,7 +197,6 @@ AttrSet { "{" binds? "}" }
 LetAttrSet { kw<"let"> "{" binds? "}" }
 RecAttrSet { kw<"rec"> "{" binds? "}" }
 
-// TODO: Do real string parsing, might need external stuff
 String { '"' stringParts* strEnd }
 IndentedString { "''" indStringParts* indStrEnd }
 
