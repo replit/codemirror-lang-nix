@@ -44,13 +44,18 @@ export const nixLanguage = LRLanguage.define({
     ]
   }),
   languageData: {
-    commentTokens: {line: ";"}
+    commentTokens: {line: "#"}
   }
 })
 
 export const nixCompletion = nixLanguage.data.of({
   autocomplete: completeFromList([
     {label: "let", type: "keyword"},
+    {label: "with", type: "keyword"},
+    {label: "rec", type: "keyword"},
+    {label: "inherit", type: "keyword"},
+    {label: "builtins", type: "keyword"},
+
     {label: "import", type: "function"},
   ])
 })

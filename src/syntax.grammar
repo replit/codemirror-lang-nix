@@ -175,6 +175,7 @@ exprSimple {
   Null |
   Integer |
   Float |
+  Boolean |
   String |
   IndentedString |
   Path |
