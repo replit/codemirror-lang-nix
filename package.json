@@ -1,7 +1,7 @@
 {
   "name": "@replit/codemirror-lang-nix",
   "description": "A Nix mode for CodeMirror 6",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "author": {
     "name": "Connor Brewster",
     "email": "connor@repl.it"
@@ -24,7 +24,12 @@
   "peerDependencies": {
     "@codemirror/language": "0.19.x",
     "@codemirror/rangeset": "0.19.x",
-    "@codemirror/view": "0.19.x"
+    "@codemirror/view": "0.19.x",
+    "@codemirror/highlight": "0.19.x",
+    "@codemirror/text": "0.19.x",
+    "@codemirror/autocomplete": "0.19.x",
+    "@lezer/common": "0.15.x",
+    "@lezer/lr": "0.15.x"
   },
   "devDependencies": {
     "@codemirror/basic-setup": "^0.19.0",
@@ -41,12 +46,5 @@
   "repository": {
     "type": "repl",
     "url": "https://replit.com/@ConnorBrewster/codemirror-lang-nix"
-  },
-  "dependencies": {
-    "@codemirror/highlight": "^0.19.6",
-    "@codemirror/text": "^0.19.5",
-    "@codemirror/autocomplete": "^0.19.6",
-    "@lezer/common": "^0.15.8",
-    "@lezer/lr": "^0.15.4"
   }
 }
