@@ -34,6 +34,7 @@
     "@codemirror/rangeset": "^0.19.1",
     "@codemirror/state": "^0.19.x",
     "@codemirror/view": "0.19.x",
+    "@codemirror/theme-one-dark": "^0.19.1",
     "@lezer/generator": "^0.15.2",
     "vite": "^2.3.8"
   },
@@ -42,11 +43,9 @@
     "url": "https://replit.com/@ConnorBrewster/codemirror-lang-nix"
   },
   "dependencies": {
-    "@codemirror/autocomplete": "^0.19.6",
     "@codemirror/highlight": "^0.19.6",
     "@codemirror/text": "^0.19.5",
-    "@codemirror/theme-one-dark": "^0.19.1",
-    "@emotion/react": "^11.6.0",
+    "@codemirror/autocomplete": "^0.19.6",
     "@lezer/common": "^0.15.8",
     "@lezer/lr": "^0.15.4"
   }
