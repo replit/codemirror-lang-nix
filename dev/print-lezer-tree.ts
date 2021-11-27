@@ -1,3 +1,5 @@
+// From: https://gist.github.com/msteen/e4828fbf25d6efef73576fc43ac479d2/
+
 import { Text } from "@codemirror/text"
 import { Input, NodeType, SyntaxNode, Tree, TreeCursor } from "@lezer/common"
 
