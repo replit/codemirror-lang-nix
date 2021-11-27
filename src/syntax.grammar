@@ -1,5 +1,7 @@
 @top Program { expression }
 
+@detectDelim
+
 @precedence {
   negate,
   has_attr,
@@ -21,7 +23,7 @@
   impl @right
 }
 
-@skip { space | Comment }
+@skip { space | LineComment | BlockComment }
 
 expression { exprFunction }
 
@@ -52,6 +54,9 @@ expression { exprFunction }
     $[a-zA-Z0-9._\-\+]* ('/' $[a-zA-Z0-9._\-\+]+)+ '/'?
   }
 
+  @precedence { Path, Float, Integer, Identifier, "." }
+  @precedence { Path, "-", ".", "+", "++", "/" }
+
   HPath {
     '~' ('/' $[a-zA-Z0-9\._\-\+]+)+ '/'?
   }
@@ -64,18 +69,21 @@ expression { exprFunction }
     $[a-zA-Z] $[a-zA-Z0-9\+\-\.]* ':' $[a-zA-Z0-9%\/\?:@\&=\+\$,\-_\.\!\~\*\']+
   }
 
-  Comment { 
-    "#" ![\n]* |
-    "/*" (![\*] | "*" ![/])* "*/"?
-  }
+  @precedence { URI, Identifier }
+
+  LineComment {  "#" ![\n]* }
+  BlockComment { "/*" (![\*] | "*" ![/])* "*/"? }
+
+  @precedence { BlockComment, "/" }
 
   space { $[ \t\n\r]+ }
 
   "(" ")"
+  "{" "}"
+  "[" "]"
+  "<" ">"
 
   Ellipses { "..." }
-
-  @precedence { Path, Comment, "+", "-", "++", ".", "/", Float, Integer, URI, Identifier }
 }
 
 exprFunction {
@@ -194,8 +202,8 @@ Boolean { @specialize<Identifier, "true" | "false"> }
 Null { @specialize<Identifier, "null"> }
 
 AttrSet { "{" binds? "}" }
-LetAttrSet { kw<"let"> "{" binds? "}" }
-RecAttrSet { kw<"rec"> "{" binds? "}" }
+LetAttrSet { kw<"let"> AttrSet }
+RecAttrSet { kw<"rec"> AttrSet }
 
 String { '"' stringParts* strEnd }
 IndentedString { "''" indStringParts* indStrEnd }
@@ -219,11 +227,5 @@ Interpolation<start> { start expression "}" }
 List { "[" exprSelect* "]" }
 
 sep1<separator, content> { content (separator content)* }
-sep<separator, content> { sep1<separator, content>? }
-
-commaSep1<content> { sep1<",", content> }
-commaSep<content> { commaSep1<content>? }
 
 kw<word> { @specialize[@name={word}]<Identifier, word> }
-
-// @detectDelims

@@ -1,7 +1,19 @@
-import { parser as nixParser } from "./syntax.grammar"
-import { LRLanguage, LanguageSupport, indentNodeProp, foldNodeProp, foldInside, delimitedIndent } from "@codemirror/language"
-import { styleTags, tags as t } from "@codemirror/highlight"
-import { completeFromList } from "@codemirror/autocomplete"
+import { parser as nixParser } from "./syntax.grammar";
+import {
+  LRLanguage,
+  LanguageSupport,
+  indentNodeProp,
+  foldNodeProp,
+  foldInside,
+  delimitedIndent,
+  continuedIndent,
+} from "@codemirror/language";
+import { styleTags, tags as t } from "@codemirror/highlight";
+import {
+  completeFromList,
+  ifNotIn,
+  snippetCompletion as snip,
+} from "@codemirror/autocomplete";
 
 export const parser = nixParser;
 
@@ -9,57 +21,70 @@ export const nixLanguage = LRLanguage.define({
   parser: parser.configure({
     props: [
       indentNodeProp.add({
-        Application: delimitedIndent({closing: ")", align: false})
+        Parenthesized: delimitedIndent({ closing: ")" }),
+        AttrSet: delimitedIndent({ closing: "}" }),
+        List: delimitedIndent({ closing: "]" }),
+        Let: continuedIndent({ except: /^\s*in\b/ }),
       }),
       foldNodeProp.add({
-        Application: foldInside
+        AttrSet: foldInside,
+        List: foldInside,
+        Let(node) {
+          let first = node.getChild("let"),
+            last = node.getChild("in");
+          if (!first || !last) return null;
+          return { from: first.to, to: last.from };
+        },
       }),
       styleTags({
         Identifier: t.variableName,
         Boolean: t.bool,
         String: t.string,
         IndentedString: t.string,
-        Comment: t.lineComment,
+        LineComment: t.lineComment,
+        BlockComment: t.blockComment,
         Float: t.float,
         Integer: t.integer,
+        Null: t.null,
+        URI: t.url,
+        SPath: t.literal,
+        Path: t.literal,
         "( )": t.paren,
         "{ }": t.brace,
-        Null: t.null,
-        URI: t.literal,
-        SPath: t.literal,
-
-        "import": t.keyword,
-        "with": t.keyword,
-        "let": t.keyword,
-        "in": t.keyword,
-        "rec": t.keyword,
-        "builtins": t.keyword,
-        "inherit": t.keyword,
-        "if": t.keyword,
-        "then": t.keyword,
-        "else": t.keyword,
-        "assert": t.keyword,
-        "or": t.keyword,
-      })
-    ]
+        "[ ]": t.squareBracket,
+        "if then else": t.controlKeyword,
+        "import with let in rec builtins inherit assert or": t.keyword,
+      }),
+    ],
   }),
   languageData: {
-    commentTokens: {line: "#"}
-  }
-})
+    commentTokens: { line: "#", block: { open: "/*", close: "*/" } },
+    closeBrackets: { brackets: ["(", "[", "{", "''", '"'] },
+    indentOnInput: /^\s*(in|\}|\)|\])$/,
+  },
+});
 
-export const nixCompletion = nixLanguage.data.of({
-  autocomplete: completeFromList([
-    {label: "let", type: "keyword"},
-    {label: "with", type: "keyword"},
-    {label: "rec", type: "keyword"},
-    {label: "inherit", type: "keyword"},
-    {label: "builtins", type: "keyword"},
-
-    {label: "import", type: "function"},
-  ])
-})
+const snippets: readonly Completion[] = [
+  snip("let ${binds} in ${expression}", {
+    label: "let",
+    detail: "Let ... in statement",
+    type: "keyword",
+  }),
+  snip("with ${expression}; ${expression}", {
+    label: "with",
+    detail: "With statement",
+    type: "keyword",
+  }),
+];
 
 export function nix() {
-    return new LanguageSupport(nixLanguage, [nixCompletion])
+  return new LanguageSupport(
+    nixLanguage,
+    nixLanguage.data.of({
+      autocomplete: ifNotIn(
+        ["LineComment", "BlockComment", "String", "IndentedString"],
+        completeFromList(snippets)
+      ),
+    })
+  );
 }

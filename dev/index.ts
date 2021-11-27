@@ -23,6 +23,10 @@ let
   this_is_true = true;
 in
 rec {
+  buildInputs = [
+    pkgs.rustc
+    pkgs.cargo
+  ];
   inherit nixpkgs;
   inherit (nixpkgs) lib;
   example = builtins.concatLists list; #is [ "a" "b" "c" ]
