@@ -16,10 +16,9 @@ import { nix } from "@replit/codemirror-lang-nix";
 
 new EditorView({
   state: EditorState.create({
-    `{ pkgs ? import <nixpkgs> {} }: pkgs.mkShell { buildInputs = [ pkgs.nodejs ]; }`,
+    doc: `{ pkgs ? import <nixpkgs> {} }: pkgs.mkShell { buildInputs = [ pkgs.nodejs ]; }`,
     extensions: [basicSetup, nix()],
   }),
   parent: document.querySelector('#editor'),
 });
-console.log(printTree(parser.parse(doc), doc));
 ```
