@@ -1,2 +1,25 @@
 # CodeMirror Nix Mode
 
+[![Run on Repl.it](https://replit.com/badge/github/replit/codemirror-lang-nix)](https://replit.com/@util/codemirror-lang-nix)
+<span class="badge-npmversion"><a href="https://npmjs.org/package/@replit/codemirror-lang-nix" title="View this project on NPM"><img src="https://img.shields.io/npm/v/@replit/codemirror-lang-nix.svg" alt="NPM version" /></a></span>
+
+A codemirror extension that adds Nix syntax highlighting and language features.
+
+![example of Nix syntax highlighting](example.png)
+
+### Usage
+
+```typescript
+import { basicSetup, EditorState } from '@codemirror/basic-setup';
+import { EditorView } from '@codemirror/view';
+import { nix } from "@replit/codemirror-lang-nix";
+
+new EditorView({
+  state: EditorState.create({
+    `{ pkgs ? import <nixpkgs> {} }: pkgs.mkShell { buildInputs = [ pkgs.nodejs ]; }`,
+    extensions: [basicSetup, nix()],
+  }),
+  parent: document.querySelector('#editor'),
+});
+console.log(printTree(parser.parse(doc), doc));
+```
