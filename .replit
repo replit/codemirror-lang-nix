@@ -1,10 +1,9 @@
-run="npm run dev"
+run="yarn dev"
 
 [packager]
-language = "nodejs-npm"
+language = "nodejs-yarn"
 [packager.features]
 packageSearch = true
-# guessImports = true
 
 [languages.js]
 pattern = "**/*.ts"

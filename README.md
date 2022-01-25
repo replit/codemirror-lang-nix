@@ -5,7 +5,7 @@
 
 A codemirror extension that adds Nix syntax highlighting and language features.
 
-![example of Nix syntax highlighting](example.png)
+![example of Nix syntax highlighting](public/nix.png)
 
 ### Usage
 
