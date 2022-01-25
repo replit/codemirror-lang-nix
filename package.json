@@ -44,7 +44,7 @@
     "vite": "^2.3.8"
   },
   "repository": {
-    "type": "repl",
-    "url": "https://replit.com/@ConnorBrewster/codemirror-lang-nix"
+    "type": "git",
+    "url": "https://github.com/replit/codemirror-lang-nix.git"
   }
 }
