@@ -37,7 +37,7 @@ export const nixLanguage = LRLanguage.define({
         },
       }),
       styleTags({
-        Identifier: t.variableName,
+        Identifier: t.propertyName,
         Boolean: t.bool,
         String: t.string,
         IndentedString: t.string,
