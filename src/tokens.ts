@@ -47,7 +47,7 @@ export const scanIndString = new ExternalTokenizer((input) => {
       break;
     } else if (next === apostrophe && afterApostrophe) {
       if (input.peek(1) === dollar) {
-        input.advance(1);
+        input.advance();
       } else {
         if (i > 1) input.acceptToken(indStrContent, -1);
         else input.acceptToken(indStrEnd, 1);
