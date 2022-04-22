@@ -23,24 +23,22 @@
     "publish": "npm run build && npm publish"
   },
   "peerDependencies": {
-    "@codemirror/language": "0.19.x",
-    "@codemirror/rangeset": "0.19.x",
-    "@codemirror/view": "0.19.x",
-    "@codemirror/highlight": "0.19.x",
-    "@codemirror/text": "0.19.x",
-    "@codemirror/autocomplete": "0.19.x",
-    "@lezer/common": "0.15.x",
-    "@lezer/lr": "0.15.x"
+    "@codemirror/language": "^0.20.0",
+    "@codemirror/state": "^0.20.0",
+    "@codemirror/view": "^0.20.0",
+    "@codemirror/autocomplete": "^0.20.0",
+    "@lezer/common": "^0.16.0",
+    "@lezer/highlight": "^0.16.0",
+    "@lezer/lr": "^0.16.0"
   },
   "devDependencies": {
-    "@codemirror/basic-setup": "^0.19.0",
-    "@codemirror/buildhelper": "^0.1.0",
-    "@codemirror/language": "^0.19.3",
-    "@codemirror/rangeset": "^0.19.1",
-    "@codemirror/state": "^0.19.x",
-    "@codemirror/view": "0.19.x",
-    "@codemirror/theme-one-dark": "^0.19.1",
-    "@lezer/generator": "^0.15.2",
+    "@codemirror/basic-setup": "^0.20.0",
+    "@codemirror/buildhelper": "^0.1.15",
+    "@codemirror/language": "^0.20.0",
+    "@codemirror/state": "^0.20.0",
+    "@codemirror/view": "0.20.1",
+    "@codemirror/theme-one-dark": "^0.20.0",
+    "@lezer/generator": "^0.16.0",
     "vite": "^2.3.8"
   },
   "repository": {

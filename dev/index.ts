@@ -1,5 +1,4 @@
 import { basicSetup, EditorState } from '@codemirror/basic-setup';
-import { css } from '@codemirror/lang-css';
 import { EditorView } from '@codemirror/view';
 import { nix, parser } from "../dist/";
 import { printTree } from "./print-lezer-tree";

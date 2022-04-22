@@ -8,11 +8,12 @@ import {
   delimitedIndent,
   continuedIndent,
 } from "@codemirror/language";
-import { styleTags, tags as t } from "@codemirror/highlight";
+import { styleTags, tags as t } from "@lezer/highlight";
 import {
   completeFromList,
   ifNotIn,
   snippetCompletion as snip,
+  Completion,
 } from "@codemirror/autocomplete";
 
 export const parser = nixParser;
