@@ -10,9 +10,10 @@ A codemirror extension that adds Nix syntax highlighting and language features.
 ### Usage
 
 ```typescript
-import { basicSetup, EditorState } from '@codemirror/basic-setup';
+import { EditorState } from '@codemirror/state';
 import { EditorView } from '@codemirror/view';
 import { nix } from "@replit/codemirror-lang-nix";
+import { basicSetup } from 'codemirror';
 
 new EditorView({
   state: EditorState.create({

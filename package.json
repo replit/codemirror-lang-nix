@@ -23,22 +23,22 @@
     "publish": "npm run build && npm publish"
   },
   "peerDependencies": {
-    "@codemirror/language": "^0.20.0",
-    "@codemirror/state": "^0.20.0",
-    "@codemirror/view": "^0.20.0",
-    "@codemirror/autocomplete": "^0.20.0",
-    "@lezer/common": "^0.16.0",
-    "@lezer/highlight": "^0.16.0",
-    "@lezer/lr": "^0.16.0"
+    "@codemirror/autocomplete": "^6.0.0",
+    "@codemirror/language": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/view": "^6.0.0",
+    "@lezer/common": "^1.0.0",
+    "@lezer/highlight": "^1.0.0",
+    "@lezer/lr": "^1.0.0"
   },
   "devDependencies": {
-    "@codemirror/basic-setup": "^0.20.0",
-    "@codemirror/buildhelper": "^0.1.15",
-    "@codemirror/language": "^0.20.0",
-    "@codemirror/state": "^0.20.0",
-    "@codemirror/view": "0.20.1",
-    "@codemirror/theme-one-dark": "^0.20.0",
-    "@lezer/generator": "^0.16.0",
+    "@codemirror/buildhelper": "^0.1.16",
+    "@codemirror/language": "^6.0.0",
+    "@codemirror/state": "^6.0.0",
+    "@codemirror/theme-one-dark": "^6.0.0",
+    "@codemirror/view": "6.0.0",
+    "@lezer/generator": "^1.0.0",
+    "codemirror": "^6.0.0",
     "vite": "^2.3.8"
   },
   "repository": {
