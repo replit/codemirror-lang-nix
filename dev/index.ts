@@ -36,6 +36,7 @@ rec {
   multiline_string = ''
     This is a multiline string. \${1 + 3}
     \\\${this is not interpolated}
+    ''\${this is not either}
     'some string in single quotes' \${nixpkgs}
   '';
 }
