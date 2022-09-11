@@ -75,7 +75,7 @@ export function stringifyTree(tree, options) {
         index = this.buffer[index + 3]
       }
       //return result.join(",")
-      return result.join('')
+      return result.join((human ? '' : ',') + ((human || pretty) ? '\n' : ''))
     }
     tree.children[0].childString = function childString(index, depth = 0) {
       let id = this.buffer[index], endIndex = this.buffer[index + 3]
@@ -88,7 +88,8 @@ export function stringifyTree(tree, options) {
             this.buffer[index + 1],
             this.buffer[index + 2],
           )
-          if (/[\r\n]/.test(nodeText)) nodeText = JSON.stringify(nodeText)
+          //if (/[\W]/.test(nodeText))
+          nodeText = JSON.stringify(nodeText)
           result += ` ${nodeText}`
         }
         result = indentStep.repeat(depth) + result
@@ -110,7 +111,7 @@ export function stringifyTree(tree, options) {
       if (pretty) {
         const indent = indentStep.repeat(depth);
         // TODO? test children.length
-        return result + " (" + '\n' + children.map(str => str + '\n').join('') + indent + ")"
+        return result + " (" + '\n' + children.join((human ? '' : ',') + ((human || pretty) ? '\n' : '')) + ((human || pretty) ? '\n' : '') + indent + ")"
       }
       return result + "(" + children.join(",") + ")"
     }
