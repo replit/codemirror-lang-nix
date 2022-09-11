@@ -69,7 +69,8 @@ for (let file of fs.readdirSync(caseDir)) {
   const result = []
   for (let testData of fileTests(fileContent, file)) {
     const { name, text, configStr, strict } = testData;
-    const strictStr = strict ? '' : '... ' // prefer ascii ... over unicode ⚠
+    //const strictStr = strict ? '' : '... ' // prefer ascii ... over unicode ⚠
+    const strictStr = ''; // FIXME ...
     const tree = parser.parse(testData.text);
     const stringifyOptions = writePrettyTree && { pretty: true, text };
     const actual = stringifyTree(tree, stringifyOptions);
