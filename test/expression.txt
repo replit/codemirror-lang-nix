@@ -1,0 +1,478 @@
+# int
+1
+==>
+Program(Int)
+
+# float
+1.2
+==>
+Program(Float)
+
+# float only right of comma
+.1
+==>
+Program(Float)
+
+# float exponent
+1.2e3
+==>
+Program(Float)
+
+# float Exponent
+1.2E3
+==>
+Program(Float)
+
+# add
+1+2
+==>
+Program(Add(Int,Int))
+
+# add with whitespace
+1 + 2
+==>
+Program(Add(Int,Int))
+
+# line comment
+# hello
+1
+==>
+Program(Comment,Int)
+
+# line comment precedence
+#/*
+1
+#*/
+==>
+Program(Comment,Int,Comment)
+
+# block comment
+/* hello */1
+==>
+Program(CommentBlock,Int)
+
+# block comment precedence
+/*
+# hello
+*/
+==>
+Program(CommentBlock)
+
+# sub
+1-2
+==>
+Program(Sub(Int,Int))
+
+# mul
+1*2
+==>
+Program(Mul(Int,Int))
+
+# div
+1/2
+==>
+Program(Div(Int,Int))
+
+# precedence mul add
+1*2+3
+==>
+Program(Add(Mul(Int,Int),Int))
+
+# string line
+"a"
+==>
+Program(String(StringContent))
+
+# string line with interpolation
+"a${x}b"
+==>
+Program(String(StringContent,StringInterpolation(Identifier),StringContent))
+
+# string line with escaped interpolation
+"a\${x}b"
+==>
+Program(String(StringContent))
+
+# string block single line
+''a''
+==>
+Program(StringBlock(StringBlockContent))
+
+# list empty
+[]
+==>
+Program(List)
+
+# list int
+[1]
+==>
+Program(List(Int))
+
+# list int string
+[1 "a"]
+==>
+Program(List(Int,String(StringContent)))
+
+# list concat 2
+[] ++ []
+==>
+Program(ConcatList(List,List))
+
+# list concat 3
+[] ++ [] ++ []
+==>
+Program(ConcatList(List,ConcatList(List,List)))
+
+# string concat 2
+"a" + "b"
+==>
+Program(Add(String(StringContent),String(StringContent)))
+
+# string concat 3
+"a" + "b" + "c"
+==>
+Program(Add(String(StringContent),String(StringContent),String(StringContent)))
+
+# attrset 0
+{}
+==>
+Program(AttrSet)
+
+# attrset 2
+{ "a" = 1; "b" = "2"; }
+==>
+Program(AttrSet(Attr(String(StringContent),Int),Attr(String(StringContent),String(StringContent))))
+
+# attrset inherit
+{ inherit a b; }
+==>
+Program(AttrSet(AttrInherit(Identifier,Identifier)))
+
+# attrset inherit from
+{ inherit (f) a b; }
+==>
+Program(AttrSet(AttrInheritFrom(Identifier,Identifier,Identifier)))
+
+# select string 2
+"a"."b"
+==>
+Program(Select(String(StringContent),AttrPath(String(StringContent))))
+
+# select string 3
+"a"."b"."c"
+==>
+Program(Select(String(StringContent),AttrPath(String(StringContent),String(StringContent))))
+
+# select identifier 3
+a.b.c
+==>
+Program(Select(Identifier,AttrPath(Identifier,Identifier)))
+
+# select or default
+a.b or false
+==>
+Program(Select(Identifier,AttrPath(Identifier),SelectDefault(or,BooleanLiteral)))
+
+# attrset with identifier
+{ a = 1; }
+==>
+Program(AttrSet(Attr(Identifier,Int)))
+
+# string block with interpolation
+''
+  a${x}b
+''
+==>
+Program(StringBlock(StringBlockContent,StringBlockInterpolation(Identifier),StringBlockContent))
+
+# string block with interpolation single line
+''a${x}b''
+==>
+Program(StringBlock(StringBlockContent,StringBlockInterpolation(Identifier),StringBlockContent))
+
+# string block with escaped interpolation single line
+''a''${x}b''
+==>
+Program(StringBlock(StringBlockContent))
+
+# string block with escaped interpolation
+''
+  a''${x}b
+''
+==>
+Program(StringBlock(StringBlockContent))
+
+# string block multiple
+''
+  a''${x}b
+'' + ''
+  a''${x}b
+'' + ''
+  a''${x}b
+''
+==>
+Program(Add(StringBlock(StringBlockContent),StringBlock(StringBlockContent),StringBlock(StringBlockContent)))
+
+# string block multiple
+''
+  a${x}b
+'' + ''
+  a${x}b
+''
+==>
+Program(Add(StringBlock(StringBlockContent,StringBlockInterpolation(Identifier),StringBlockContent),StringBlock(StringBlockContent,StringBlockInterpolation(Identifier),StringBlockContent)))
+
+# if
+if true then true else false
+==>
+Program(If(BooleanLiteral,BooleanLiteral,BooleanLiteral))
+
+# parens
+(1)
+==>
+Program(Braces(Int))
+
+# function
+a: x
+==>
+Program(Function(Identifier,Identifier))
+
+# function 2
+a: b: x
+==>
+Program(Function(Identifier,Function(Identifier,Identifier)))
+
+# function 3
+a: b: c: x
+==>
+Program(Function(Identifier,Function(Identifier,Function(Identifier,Identifier))))
+
+# function formals
+{ a }: x
+==>
+Program(Function(Formals(Formal(Identifier)),Identifier))
+
+# function 2 formals
+{ a }: { b }: x
+==>
+Program(Function(Formals(Formal(Identifier)),Function(Formals(Formal(Identifier)),Identifier)))
+
+# function 3 formals
+{ a }: { b }: { c }: x
+==>
+Program(Function(Formals(Formal(Identifier)),Function(Formals(Formal(Identifier)),Function(Formals(Formal(Identifier)),Identifier))))
+
+# function formals 2
+{ a, b }: x
+==>
+Program(Function(Formals(Formal(Identifier),Formal(Identifier)),Identifier))
+
+# function formals 3
+{ a, b, c }: x
+==>
+Program(Function(Formals(Formal(Identifier),Formal(Identifier),Formal(Identifier)),Identifier))
+
+# function formals default
+{ a ? 1 }: x
+==>
+Program(Function(Formals(Formal(Identifier,FormalDefault(Int))),Identifier))
+
+# function formals default 2
+{ a ? 1, b ? 2 }: x
+==>
+Program(Function(Formals(Formal(Identifier,FormalDefault(Int)),Formal(Identifier,FormalDefault(Int))),Identifier))
+
+# function formals all
+{ a } @ z: x
+==>
+Program(Function(Formals(Formal(Identifier),FormalsAllAfter(Identifier)),Identifier))
+
+# function formals all 2
+{ a, b } @ z: x
+==>
+Program(Function(Formals(Formal(Identifier),Formal(Identifier),FormalsAllAfter(Identifier)),Identifier))
+
+# function formals all before
+z @ { a }: x
+==>
+Program(Function(Formals(FormalsAllBefore(Identifier),Formal(Identifier)),Identifier))
+
+# function formals rest
+{ a, ... }: x
+==>
+Program(Function(Formals(Formal(Identifier),FormalsRest),Identifier))
+
+# function formals rest 2
+{ a, b, ... }: x
+==>
+Program(Function(Formals(Formal(Identifier),Formal(Identifier),FormalsRest),Identifier))
+
+# function formals rest only
+{ ... }: x
+==>
+Program(Function(Formals(FormalsRest),Identifier))
+
+# update 2
+a // b
+==>
+Program(Update(Identifier,Identifier))
+
+# update 3
+a // b // c
+==>
+Program(Update(Identifier,Update(Identifier,Identifier)))
+
+# path absolute
+/etc
+==>
+Program(PathAbsolute)
+
+# path absolute 2
+/etc/nixos
+==>
+Program(PathAbsolute)
+
+# path relative
+./a
+==>
+Program(PathRelative)
+
+# path relative 2
+./a/b
+==>
+Program(PathRelative)
+
+# path library
+<nixpkgs>
+==>
+Program(PathLibrary)
+
+# path library 2
+<nixpkgs/nixos>
+==>
+Program(PathLibrary)
+
+# boolean true
+true
+==>
+Program(BooleanLiteral)
+
+# boolean false
+false
+==>
+Program(BooleanLiteral)
+
+# null
+null
+==>
+Program(NullLiteral)
+
+# apply
+a b
+==>
+Program(Apply(Identifier,Identifier))
+
+# apply 2
+a b 1
+==>
+Program(Apply(Apply(Identifier,Identifier),Int))
+
+# apply 2 braces
+a (b 1)
+==>
+Program(Apply(Identifier,Braces(Apply(Identifier,Int))))
+
+# HasAttr
+a ? b
+==>
+Program(HasAttr(Identifier,AttrPath(Identifier)))
+
+# HasAttr 2
+a ? b.c
+==>
+Program(HasAttr(Identifier,AttrPath(Identifier,Identifier)))
+
+# negative
+-x
+==>
+Program(Negative(Identifier))
+
+# not
+!x
+==>
+Program(Not(Identifier))
+
+# compare <
+a < b
+==>
+Program(CompareLT(Identifier,Identifier))
+
+# compare >
+a > b
+==>
+Program(CompareGT(Identifier,Identifier))
+
+# compare <=
+a <= b
+==>
+Program(CompareLTE(Identifier,Identifier))
+
+# compare >=
+a >= b
+==>
+Program(CompareGTE(Identifier,Identifier))
+
+# equal
+a == b
+==>
+Program(Equal(Identifier,Identifier))
+
+# not equal
+a != b
+==>
+Program(NotEqual(Identifier,Identifier))
+
+# and
+a && b
+==>
+Program(And(Identifier,Identifier))
+
+# or
+a || b
+==>
+Program(Or(Identifier,Identifier))
+
+# imply
+a -> b
+==>
+Program(Imply(Identifier,Identifier))
+
+# uri
+a://b:3?d=e&f=g
+==>
+Program(URI)
+
+# assert
+assert a; x
+==>
+Program(Assert(Identifier,Identifier))
+
+# with
+with a; x
+==>
+Program(With(Identifier,Identifier))
+
+# let
+let a = b; in x
+==>
+Program(Let(Attrs(Attr(Identifier,Identifier)),Identifier))
+
+# let inherit
+let inherit a b; in x
+==>
+Program(Let(Attrs(AttrInherit(Identifier,Identifier)),Identifier))
+
+# let inherit from
+let inherit (f) a b; in x
+==>
+Program(Let(let,inherit,"(",Identifier,")",Identifier,Identifier,in,Identifier))
