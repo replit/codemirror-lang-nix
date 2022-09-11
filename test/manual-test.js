@@ -35,3 +35,5 @@ catch (e) {
 console.log(stringifyTree(actual));
 console.log();
 console.log(stringifyTree(actual, {pretty: true, text }));
+console.log();
+console.log(stringifyTree(actual, {human: true, text }));
