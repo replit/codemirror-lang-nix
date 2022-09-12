@@ -885,6 +885,34 @@ Program (
   Path
 )
 
+# path relative 3
+./a/b.c
+==>
+Program (
+  Path
+)
+
+# path home
+~/a
+==>
+Program (
+  Path
+)
+
+# path home 2
+~/a/b
+==>
+Program (
+  Path
+)
+
+# path home 3
+~/a/b.c
+==>
+Program (
+  Path
+)
+
 # path library
 <nixpkgs>
 ==>
@@ -894,6 +922,13 @@ Program (
 
 # path library 2
 <nixpkgs/nixos>
+==>
+Program (
+  SPath
+)
+
+# path library 3
+<nixpkgs/nixos/modules>
 ==>
 Program (
   SPath
