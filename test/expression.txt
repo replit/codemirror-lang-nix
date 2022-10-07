@@ -1,0 +1,1208 @@
+# int
+1
+==>
+Program (
+  Integer
+)
+
+# float
+1.2
+==>
+Program (
+  Float
+)
+
+# float only right of comma
+.1
+==>
+Program (
+  Float
+)
+
+# float exponent
+1.2e3
+==>
+Program (
+  Float
+)
+
+# float Exponent
+1.2E3
+==>
+Program (
+  Float
+)
+
+# add
+1+2
+==>
+Program (
+  BinaryExpr (
+    Integer
+    Integer
+  )
+)
+
+# add with whitespace
+1 + 2
+==>
+Program (
+  BinaryExpr (
+    Integer
+    Integer
+  )
+)
+
+# line comment
+# hello
+1
+==>
+Program (
+  LineComment  Integer
+)
+
+# line comment precedence
+#/*
+1
+#*/
+==>
+Program (
+  LineComment  Integer  LineComment
+)
+
+# block comment
+/* hello */1
+==>
+Program (
+  BlockComment  Integer
+)
+
+# block comment precedence
+/*
+# hello
+*/
+==>
+Program (
+  BlockComment  ⚠ FIXME
+)
+
+# sub
+1-2
+==>
+Program (
+  BinaryExpr (
+    Integer
+    Integer
+  )
+)
+
+# mul
+1*2
+==>
+Program (
+  BinaryExpr (
+    Integer
+    Integer
+  )
+)
+
+# div
+1/2
+==>
+Program (
+  Path
+)
+
+# precedence mul add
+1*2+3
+==>
+Program (
+  BinaryExpr (
+    BinaryExpr (
+      Integer
+      Integer
+    )
+    Integer
+  )
+)
+
+# string line
+"a"
+==>
+Program (
+  String
+)
+
+# string line with interpolation
+"a${x}b"
+==>
+Program (
+  String (
+    Interpolation (
+      Identifier
+      "}"
+    )
+  )
+)
+
+# string line with escaped interpolation
+"a\${x}b"
+==>
+Program (
+  String
+)
+
+# string block single line
+''a''
+==>
+Program (
+  IndentedString
+)
+
+# list empty
+[]
+==>
+Program (
+  List (
+    "["
+    "]"
+  )
+)
+
+# list int
+[1]
+==>
+Program (
+  List (
+    "["
+    Integer
+    "]"
+  )
+)
+
+# list int string
+[1 "a"]
+==>
+Program (
+  List (
+    "["
+    Integer
+    String
+    "]"
+  )
+)
+
+# list concat 2
+[] ++ []
+==>
+Program (
+  BinaryExpr (
+    List (
+      "["
+      "]"
+    )
+    List (
+      "["
+      "]"
+    )
+  )
+)
+
+# list concat 3
+[] ++ [] ++ []
+==>
+Program (
+  BinaryExpr (
+    List (
+      "["
+      "]"
+    )
+    BinaryExpr (
+      List (
+        "["
+        "]"
+      )
+      List (
+        "["
+        "]"
+      )
+    )
+  )
+)
+
+# string concat 2
+"a" + "b"
+==>
+Program (
+  BinaryExpr (
+    String
+    String
+  )
+)
+
+# string concat 3
+"a" + "b" + "c"
+==>
+Program (
+  BinaryExpr (
+    BinaryExpr (
+      String
+      String
+    )
+    String
+  )
+)
+
+# attrset 0
+{}
+==>
+Program (
+  AttrSet (
+    "{"
+    "}"
+  )
+)
+
+# attrset 2
+{ "a" = 1; "b" = "2"; }
+==>
+Program (
+  AttrSet (
+    "{"
+    Bind (
+      AttrPath (
+        String
+      )
+      Integer
+    )
+    Bind (
+      AttrPath (
+        String
+      )
+      String
+    )
+    "}"
+  )
+)
+
+# attrset inherit
+{ inherit a b; }
+==>
+Program (
+  AttrSet (
+    "{"
+    inherit
+    Identifier
+    Identifier
+    "}"
+  )
+)
+
+# attrset inherit from
+{ inherit (f) a b; }
+==>
+Program (
+  AttrSet (
+    "{"
+    inherit
+    "("
+    Identifier
+    ")"
+    Identifier
+    Identifier
+    "}"
+  )
+)
+
+# select string 2
+"a"."b"
+==>
+Program (
+  Select (
+    String
+    AttrPath (
+      String
+    )
+  )
+)
+
+# select string 3
+"a"."b"."c"
+==>
+Program (
+  Select (
+    String
+    AttrPath (
+      String
+      String
+    )
+  )
+)
+
+# select identifier 3
+a.b.c
+==>
+Program (
+  Select (
+    Identifier
+    AttrPath (
+      Identifier
+      Identifier
+    )
+  )
+)
+
+# select or default
+a.b or false
+==>
+Program (
+  Select (
+    Identifier
+    AttrPath (
+      Identifier
+    )
+    or
+    Boolean
+  )
+)
+
+# attrset with identifier
+{ a = 1; }
+==>
+Program (
+  AttrSet (
+    "{"
+    Bind (
+      AttrPath (
+        Identifier
+      )
+      Integer
+    )
+    "}"
+  )
+)
+
+# string block with interpolation
+''
+  a${x}b
+''
+==>
+Program (
+  IndentedString (
+    Interpolation (
+      Identifier
+      "}"
+    )
+  )
+)
+
+# string block with interpolation single line
+''a${x}b''
+==>
+Program (
+  IndentedString (
+    Interpolation (
+      Identifier
+      "}"
+    )
+  )
+)
+
+# string block with escaped interpolation single line
+''a''${x}b''
+==>
+Program (
+  App (
+    Select (
+      IndentedString
+      ⚠ FIXME
+      AttrPath (
+        Interpolation (
+          Identifier
+          "}"
+        )
+      )
+    )
+    Identifier
+  )
+)
+
+# string block with escaped interpolation
+''
+  a''${x}b
+''
+==>
+Program (
+  App (
+    App (
+      Select (
+        IndentedString
+        ⚠ FIXME
+        AttrPath (
+          Interpolation (
+            Identifier
+            "}"
+          )
+        )
+      )
+      Identifier
+    )
+    IndentedString (
+      ⚠ FIXME
+    )
+  )
+)
+
+# string block multiple
+''
+  a''${x}b
+'' + ''
+  a''${x}b
+'' + ''
+  a''${x}b
+''
+==>
+Program (
+  App (
+    App (
+      App (
+        App (
+          App (
+            App (
+              App (
+                App (
+                  Select (
+                    IndentedString
+                    ⚠ FIXME
+                    AttrPath (
+                      Interpolation (
+                        Identifier
+                        "}"
+                      )
+                    )
+                  )
+                  Identifier
+                )
+                IndentedString
+              )
+              Select (
+                Identifier
+                ⚠ FIXME
+                AttrPath (
+                  Interpolation (
+                    Identifier
+                    "}"
+                  )
+                )
+              )
+            )
+            Identifier
+          )
+          IndentedString
+        )
+        Select (
+          Identifier
+          ⚠ FIXME
+          AttrPath (
+            Interpolation (
+              Identifier
+              "}"
+            )
+          )
+        )
+      )
+      Identifier
+    )
+    IndentedString (
+      ⚠ FIXME
+    )
+  )
+)
+
+# string block multiple
+''
+  a${x}b
+'' + ''
+  a${x}b
+''
+==>
+Program (
+  BinaryExpr (
+    IndentedString (
+      Interpolation (
+        Identifier
+        "}"
+      )
+    )
+    IndentedString (
+      Interpolation (
+        Identifier
+        "}"
+      )
+    )
+  )
+)
+
+# if
+if true then true else false
+==>
+Program (
+  IfExpr (
+    if
+    Boolean
+    then
+    Boolean
+    else
+    Boolean
+  )
+)
+
+# parens
+(1)
+==>
+Program (
+  Parenthesized (
+    "("
+    Integer
+    ")"
+  )
+)
+
+# function
+a: x
+==>
+Program (
+  Function (
+    Identifier
+    Identifier
+  )
+)
+
+# function 2
+a: b: x
+==>
+Program (
+  Function (
+    Identifier
+    Function (
+      Identifier
+      Identifier
+    )
+  )
+)
+
+# function 3
+a: b: c: x
+==>
+Program (
+  Function (
+    Identifier
+    Function (
+      Identifier
+      Function (
+        Identifier
+        Identifier
+      )
+    )
+  )
+)
+
+# function formals
+{ a }: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+    )
+    "}"
+    Identifier
+  )
+)
+
+# function 2 formals
+{ a }: { b }: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+    )
+    "}"
+    Function (
+      "{"
+      Formal (
+        Identifier
+      )
+      "}"
+      Identifier
+    )
+  )
+)
+
+# function 3 formals
+{ a }: { b }: { c }: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+    )
+    "}"
+    Function (
+      "{"
+      Formal (
+        Identifier
+      )
+      "}"
+      Function (
+        "{"
+        Formal (
+          Identifier
+        )
+        "}"
+        Identifier
+      )
+    )
+  )
+)
+
+# function formals 2
+{ a, b }: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+    )
+    Formal (
+      Identifier
+    )
+    "}"
+    Identifier
+  )
+)
+
+# function formals 3
+{ a, b, c }: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+    )
+    Formal (
+      Identifier
+    )
+    Formal (
+      Identifier
+    )
+    "}"
+    Identifier
+  )
+)
+
+# function formals default
+{ a ? 1 }: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+      Integer
+    )
+    "}"
+    Identifier
+  )
+)
+
+# function formals default 2
+{ a ? 1, b ? 2 }: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+      Integer
+    )
+    Formal (
+      Identifier
+      Integer
+    )
+    "}"
+    Identifier
+  )
+)
+
+# function formals all
+{ a } @ z: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+    )
+    "}"
+    Identifier
+    Identifier
+  )
+)
+
+# function formals all 2
+{ a, b } @ z: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+    )
+    Formal (
+      Identifier
+    )
+    "}"
+    Identifier
+    Identifier
+  )
+)
+
+# function formals all before
+z @ { a }: x
+==>
+Program (
+  Function (
+    Identifier
+    "{"
+    Formal (
+      Identifier
+    )
+    "}"
+    Identifier
+  )
+)
+
+# function formals rest
+{ a, ... }: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+    )
+    Ellipses
+    "}"
+    Identifier
+  )
+)
+
+# function formals rest 2
+{ a, b, ... }: x
+==>
+Program (
+  Function (
+    "{"
+    Formal (
+      Identifier
+    )
+    Formal (
+      Identifier
+    )
+    Ellipses
+    "}"
+    Identifier
+  )
+)
+
+# function formals rest only
+{ ... }: x
+==>
+Program (
+  Function (
+    "{"
+    Ellipses
+    "}"
+    Identifier
+  )
+)
+
+# update 2
+a // b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    Identifier
+  )
+)
+
+# update 3
+a // b // c
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    BinaryExpr (
+      Identifier
+      Identifier
+    )
+  )
+)
+
+# path absolute
+/etc
+==>
+Program (
+  Path
+)
+
+# path absolute 2
+/etc/nixos
+==>
+Program (
+  Path
+)
+
+# path relative
+./a
+==>
+Program (
+  Path
+)
+
+# path relative 2
+./a/b
+==>
+Program (
+  Path
+)
+
+# path relative 3
+./a/b.c
+==>
+Program (
+  Path
+)
+
+# path home
+~/a
+==>
+Program (
+  Path
+)
+
+# path home 2
+~/a/b
+==>
+Program (
+  Path
+)
+
+# path home 3
+~/a/b.c
+==>
+Program (
+  Path
+)
+
+# path library
+<nixpkgs>
+==>
+Program (
+  SPath
+)
+
+# path library 2
+<nixpkgs/nixos>
+==>
+Program (
+  SPath
+)
+
+# path library 3
+<nixpkgs/nixos/modules>
+==>
+Program (
+  SPath
+)
+
+# boolean true
+true
+==>
+Program (
+  Boolean
+)
+
+# boolean false
+false
+==>
+Program (
+  Boolean
+)
+
+# null
+null
+==>
+Program (
+  Null
+)
+
+# apply
+a b
+==>
+Program (
+  App (
+    Identifier
+    Identifier
+  )
+)
+
+# apply 2
+a b 1
+==>
+Program (
+  App (
+    App (
+      Identifier
+      Identifier
+    )
+    Integer
+  )
+)
+
+# apply 2 braces
+a (b 1)
+==>
+Program (
+  App (
+    Identifier
+    Parenthesized (
+      "("
+      App (
+        Identifier
+        Integer
+      )
+      ")"
+    )
+  )
+)
+
+# HasAttr
+a ? b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    AttrPath (
+      Identifier
+    )
+  )
+)
+
+# HasAttr 2
+a ? b.c
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    AttrPath (
+      Identifier
+      Identifier
+    )
+  )
+)
+
+# negative
+-x
+==>
+Program (
+  UnaryExpr (
+    Identifier
+  )
+)
+
+# not
+!x
+==>
+Program (
+  UnaryExpr (
+    Identifier
+  )
+)
+
+# compare <
+a < b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    "<"
+    Identifier
+  )
+)
+
+# compare >
+a > b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    ">"
+    Identifier
+  )
+)
+
+# compare <=
+a <= b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    Identifier
+  )
+)
+
+# compare >=
+a >= b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    Identifier
+  )
+)
+
+# equal
+a == b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    Identifier
+  )
+)
+
+# not equal
+a != b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    Identifier
+  )
+)
+
+# and
+a && b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    Identifier
+  )
+)
+
+# or
+a || b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    Identifier
+  )
+)
+
+# imply
+a -> b
+==>
+Program (
+  BinaryExpr (
+    Identifier
+    Identifier
+  )
+)
+
+# uri
+a://b:3?d=e&f=g
+==>
+Program (
+  URI
+)
+
+# assert
+assert a; x
+==>
+Program (
+  Assert (
+    assert
+    Identifier
+    Identifier
+  )
+)
+
+# with
+with a; x
+==>
+Program (
+  With (
+    with
+    Identifier
+    Identifier
+  )
+)
+
+# let
+let a = b; in x
+==>
+Program (
+  Let (
+    let
+    Bind (
+      AttrPath (
+        Identifier
+      )
+      Identifier
+    )
+    in
+    Identifier
+  )
+)
+
+# let inherit
+let inherit a b; in x
+==>
+Program (
+  Let (
+    let
+    inherit
+    Identifier
+    Identifier
+    in
+    Identifier
+  )
+)
+
+# let inherit from
+let inherit (f) a b; in x
+==>
+Program (
+  Let (
+    let
+    inherit
+    "("
+    Identifier
+    ")"
+    Identifier
+    Identifier
+    in
+    Identifier
+  )
+)

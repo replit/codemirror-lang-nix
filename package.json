@@ -38,6 +38,7 @@
     "@codemirror/theme-one-dark": "^6.0.0",
     "@codemirror/view": "6.0.0",
     "@lezer/generator": "^1.0.0",
+    "@lezer/lr": "^1.2.3",
     "codemirror": "^6.0.0",
     "vite": "^2.3.8"
   },
