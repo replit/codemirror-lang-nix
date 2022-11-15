@@ -1,10 +1,10 @@
 {
-  "name": "codemirror-tbd-language-mode",
-  "description": "A TBD language mode for CodeMirror 6",
+  "name": "@replit/codemirror-lang-nix",
+  "description": "A Nix mode for CodeMirror 6",
   "version": "6.0.0",
   "author": {
-    "name": "Your name",
-    "email": "your@email.com"
+    "name": "Connor Brewster",
+    "email": "connor@repl.it"
   },
   "type": "module",
   "main": "dist/index.cjs",
