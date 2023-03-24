@@ -19,6 +19,7 @@ import {
 export const parser = nixParser;
 
 export const nixLanguage = LRLanguage.define({
+  name: 'Nix',
   parser: parser.configure({
     props: [
       indentNodeProp.add({
